@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { Sidebar, Feed, Widget } from "components/pages";
-export default function Home() {
+export default function Home({ data, news }) {
   return (
     <div>
       <Head>
@@ -12,8 +12,25 @@ export default function Home() {
       <main className="flex min-h-screen max-w-7xl mx-auto ">
         <Sidebar />
         <Feed />
-        <Widget />
+        <Widget data={data} news={news} />
       </main>
     </div>
   );
 }
+
+export const getServerSideProps = async () => {
+  const data = await fetch("https://randomuser.me/api/?results=400")
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+  const news = await fetch(
+    `https://newsapi.org/v2/everything?q=manchester-united&apiKey=${process.env.API_KEY}`
+  )
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+  return {
+    props: {
+      data: data?.results,
+      news: news?.articles,
+    },
+  };
+};

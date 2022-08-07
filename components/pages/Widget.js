@@ -1,23 +1,37 @@
 import { SearchIcon } from "@heroicons/react/outline";
 import { useState } from "react";
+import { AddUsers } from "components/layout";
+import PropTypes from "prop-types";
+import { useEffect } from "react";
+import parse from "html-react-parser";
+const Widget = ({ data, news }) => {
+  const [state, setState] = useState(5);
+  const [newState, setNewState] = useState([]);
+  useEffect(() => {
+    setNewState(news);
+  }, [news]);
 
-const Widget = () => {
-  const [state, setState] = useState(false);
-  const y = Array(10).fill({
-    text: "Bill Gate questions Elon Musk's goal with Twitter: 'He could make it worse' -CNBC",
-    author: "CNBC",
-    image:
-      "https://d1fdloi71mui9q.cloudfront.net/25oCZvSZTV684Q2YtnH4_uOYjRPFk5d2tXO11",
-  });
-  const M = ({ text, author, image }) => {
+  const M = ({ text, author, image, url }) => {
     return (
-      <div className="flex items-center border-b border-gray-50">
-        <div>
-          <p className="font-bold-sm text-lg">{text}</p>
-          <span className="font-light">{author}</span>
+      <a
+        href={url}
+        target="_blank"
+        without
+        rel="noreferrer"
+        className="px-4 py-2 space-x-1 hover:bg-gray-200 cursor-pointer transition duration-200 flex items-center justify-between border-b border-gray-50"
+      >
+        <div className="space-y-0.5">
+          <h5 className="font-bold-sm text-sm">{parse(text)}</h5>
+          <span className="text-xs font-medium text-gray-500">{author}</span>
         </div>
-        <img alt="image" className="h-9 rounded-lg w-12" src={image} />
-      </div>
+
+        <img
+          alt={author}
+          loading="lazy"
+          className="h-[70px] rounded-xl object-contain w-[70px]"
+          src={image}
+        />
+      </a>
     );
   };
 
@@ -34,20 +48,35 @@ const Widget = () => {
         </div>
       </div>
       <div className=" p-2 bg-gray-100 rounded-lg w-[90%] xl:w-[75%] ">
-        <h1 className="text-2xl  font-bold tracking-wide">
+        <h1 className="text-xl  px-4 font-bold tracking-wide">
           What&apos;s happening
         </h1>
-        {y.slice(0, state ? y.length - 1 : 2).map((item, index) => {
-          const { text, author, image } = item;
-          return <M key={index} text={text} author={author} image={image} />;
+        {newState.slice(0, state).map((item, index) => {
+          const { description, source, urlToImage, url } = item;
+          return (
+            <M
+              key={index}
+              text={description}
+              author={source?.name}
+              image={urlToImage}
+              url={url}
+            />
+          );
         })}
-        <p
-          onClick={() => setState(!state)}
-          className="text-blue-400 cursor-pointer mt-4"
-        >{`show ${state ? "less" : "more"}`}</p>
+        <span
+          onClick={() => setState(state + 5)}
+          role="button"
+          className="text-blue-300 px-4 hover:text-blue-400 cursor-pointer mt-4"
+        >
+          show more
+        </span>
       </div>
+      <AddUsers data={data} />
     </div>
   );
 };
 
 export default Widget;
+Widget.propTypes = {
+  data: PropTypes.array,
+};

@@ -14,7 +14,7 @@ export default function Feed() {
       text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
     },
     {
-      id,
+      id: 1,
       name: "John Doe1",
       username: "johndoe",
       time: "1h ago",
@@ -24,6 +24,7 @@ export default function Feed() {
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
     },
   ];
+
   return (
     <div className="sm:ml-[75px] xl:ml-[300px] w-[800px]  xl:min-w-6xl border-r border-l flex-2">
       <div className="flex sticky item-center p-3 top-0 z-30 bg-white border-b border-gray-200 ">
