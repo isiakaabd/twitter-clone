@@ -1,4 +1,5 @@
 import Head from "next/head";
+import "dotenv/config";
 import { Sidebar, Feed, Widget } from "components/pages";
 export default function Home({ data, news }) {
   return (
