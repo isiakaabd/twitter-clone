@@ -24,7 +24,7 @@ export const getServerSideProps = async () => {
     .then((res) => res.json())
     .catch((err) => console.log(err));
   const news = await fetch(
-    `https://newsapi.org/v2/everything?q=manchester-united&apiKey=${process.env.API_KEY}`
+    `https://newsapi.org/v2/everything?q=manchester-united&apiKey=${process.env.NEXT_PUBLIC_ANALYTICS_ID}`
   )
     .then((res) => res.json())
     .catch((err) => console.log(err));
