@@ -18,7 +18,7 @@ const nextConfig = {
   //   },
   // },
   images: {
-    domains: ["miro.medium.com"],
+    domains: ["miro.medium.com", "lh3.googleusercontent.com"],
   },
 };
 
