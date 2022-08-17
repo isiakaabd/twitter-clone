@@ -45,6 +45,7 @@ const HeaderForm = () => {
           <div className="w-full space-x-3  flex ">
             <img
               src={session?.user?.image}
+              loading="lazy"
               alt={`${session.user.name}'s profile picture`}
               className="h-11 w-11 rounded-full cursor-pointer hover:brightness-95"
             />
@@ -61,12 +62,12 @@ const HeaderForm = () => {
                 <div className="flex relative justify-between">
                   <XIcon
                     onClick={() => setImageState(undefined)}
-                    className="h-7 shadow-md shadow-white rounded-full  absolute text-black  hover:text-white cursor-pointer z-10"
+                    className="h-7 p-1 shadow-md shadow-white rounded-full  absolute text-white bg-gray-800   hover:bg-gray-600 cursor-pointer z-10"
                   />
                   <img
                     src={imageState}
                     alt="uploaded image"
-                    className={isLoading ? "animate-pulse " : ""}
+                    className={isLoading ? " animate-pulse " : ""}
                   />
                 </div>
               )}
