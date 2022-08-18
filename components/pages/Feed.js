@@ -1,29 +1,44 @@
 import { SparklesIcon } from "@heroicons/react/outline";
 import { HeaderForm, Tweets } from "components/layout";
-import { useId } from "react";
+import { db } from "../../firebase";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { useId, useState, useEffect } from "react";
 export default function Feed() {
   const id = useId();
-  const tweets = [
-    {
-      id,
-      name: "John Doe",
-      username: "johndoe",
-      time: "1h ago",
-      image:
-        "https://d1fdloi71mui9q.cloudfront.net/25oCZvSZTV684Q2YtnH4_uOYjRPFk5d2tXO11",
-      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-    },
-    {
-      id: 1,
-      name: "John Doe1",
-      username: "johndoe",
-      time: "1h ago",
-      image:
-        "https://d1fdloi71mui9q.cloudfront.net/25oCZvSZTV684Q2YtnH4_uOYjRPFk5d2tXO11",
-      tweet:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-    },
-  ];
+  const [tweets, setTweets] = useState([]);
+
+  useEffect(
+    () =>
+      onSnapshot(
+        query(collection(db, "posts"), orderBy("timestamp", "desc")),
+        (snapshot) => {
+          setTweets(snapshot.docs);
+        }
+      ),
+    []
+  );
+
+  // const tweets = [
+  //   {
+  //     id,
+  //     name: "John Doe",
+  //     username: "johndoe",
+  //     time: "1h ago",
+  //     image:
+  //       "https://d1fdloi71mui9q.cloudfront.net/25oCZvSZTV684Q2YtnH4_uOYjRPFk5d2tXO11",
+  //     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
+  //   },
+  //   {
+  //     id: 1,
+  //     name: "John Doe1",
+  //     username: "johndoe",
+  //     time: "1h ago",
+  //     image:
+  //       "https://d1fdloi71mui9q.cloudfront.net/25oCZvSZTV684Q2YtnH4_uOYjRPFk5d2tXO11",
+  //     tweet:
+  //       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
+  //   },
+  // ];
 
   return (
     <div className="sm:ml-[75px] xl:ml-[300px] w-[800px]  xl:min-w-6xl border-r border-l flex-2">

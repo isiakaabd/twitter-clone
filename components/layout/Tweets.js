@@ -7,13 +7,15 @@ import {
   HeartIcon,
 } from "@heroicons/react/solid";
 import PropTypes from "prop-types";
+import Moment from "react-moment";
 
 const Tweets = ({ tweet }) => {
-  const { id, image, username, name, text, time } = tweet;
+  const { timestamp, image, username, userImage, name, text } = tweet.data();
+  console.log(timestamp);
   return (
     <div className="flex space-x-2 p-3 cursor-pointer border-b border-gray-200">
       <div>
-        <img alt={name} className="h-11 w-11 rounded-full" src={image} />
+        <img alt={name} className="h-11 w-11 rounded-full" src={userImage} />
       </div>
       <div className=" flex-1 w-full flex flex-col">
         <div className="flex items-center justify-between w-full">
@@ -24,7 +26,7 @@ const Tweets = ({ tweet }) => {
             </h4>
             <span className="text-sm sm:text-[15px]">@{username}</span>
             <span className="text-sm sm:text-[15px] hover:underline">
-              {time}
+              <Moment fromNow>{timestamp?.toDate()}</Moment>
             </span>
           </div>
           {/* </div> */}
