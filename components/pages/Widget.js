@@ -4,6 +4,7 @@ import { AddUsers } from "components/layout";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import parse from "html-react-parser";
+import { AnimatePresence, motion } from "framer-motion";
 const Widget = ({ data, news }) => {
   const [state, setState] = useState(5);
   const [newState, setNewState] = useState([]);
@@ -51,18 +52,28 @@ const Widget = ({ data, news }) => {
         <h1 className="text-xl  px-4 font-bold tracking-wide">
           What&apos;s happening
         </h1>
-        {newState.slice(0, state).map((item, index) => {
-          const { description, source, urlToImage, url } = item;
-          return (
-            <M
-              key={index}
-              text={description}
-              author={source?.name}
-              image={urlToImage}
-              url={url}
-            />
-          );
-        })}
+        <AnimatePresence>
+          {newState.slice(0, state).map((item, index) => {
+            const { description, source, urlToImage, url } = item;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              >
+                <M
+                  key={index}
+                  text={description}
+                  author={source?.name}
+                  image={urlToImage}
+                  url={url}
+                />
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
         <span
           onClick={() => setState(state + 5)}
           role="button"

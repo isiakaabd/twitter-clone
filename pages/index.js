@@ -1,7 +1,8 @@
 import Head from "next/head";
 import "dotenv/config";
-import { Sidebar, Feed, Widget } from "components/pages";
-export default function Home({ data, news }) {
+import { memo } from "react";
+import { Sidebar, Feed, CommentModal, Widget } from "components/pages";
+const Home = ({ data, news }) => {
   return (
     <div>
       <Head>
@@ -14,13 +15,15 @@ export default function Home({ data, news }) {
         <Sidebar />
         <Feed />
         <Widget data={data} news={news} />
+        <CommentModal />
       </main>
     </div>
   );
-}
+};
+export default memo(Home);
 
 export const getServerSideProps = async () => {
-  const data = await fetch("https://randomuser.me/api/?results=400")
+  const data = await fetch("https://randomuser.me/api/?results=500")
     .then((res) => res.json())
     .catch((err) => console.log(err));
   const news = await fetch(

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Profile } from "components/layout";
 import logo from "components/images/logo.svg";
 import { useSession, signIn } from "next-auth/react";
+import { motion, AnimatePresence } from "framer-motion";
 const Sidebar = () => {
   const { data: session } = useSession();
   return (
@@ -12,20 +13,32 @@ const Sidebar = () => {
         <Image width="50" height="50" src={logo} alt="twitter-logo" />
       </div>
       <div className="mt-4 mb-2.5 xl:items-start">
-        {sideMenu.slice(session ? 1 : 0, session ? 7 : 2).map((item) => {
-          const { id, name, Icon } = item;
-          return (
-            <div
-              key={id}
-              className="hoverEffect flex items-center justify-center xl:justify-start text-lg space-x-3 text-gray-700"
-            >
-              <Icon className="h-7" />
-              <span className={`${id === 1 && "font-bold"} hidden xl:inline`}>
-                {name}
-              </span>
-            </div>
-          );
-        })}
+        <AnimatePresence>
+          {sideMenu.slice(session ? 1 : 0, session ? 7 : 2).map((item) => {
+            const { id, name, Icon } = item;
+            return (
+              <motion.div
+                key={id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              >
+                <div
+                  key={id}
+                  className="hoverEffect flex items-center justify-center xl:justify-start text-lg space-x-3 text-gray-700"
+                >
+                  <Icon className="h-7" />
+                  <span
+                    className={`${id === 1 && "font-bold"} hidden xl:inline`}
+                  >
+                    {name}
+                  </span>
+                </div>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
       {session ? (
         <>

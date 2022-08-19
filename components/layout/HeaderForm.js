@@ -2,7 +2,7 @@ import { EmojiHappyIcon, PhotographIcon, XIcon } from "@heroicons/react/solid";
 import { db, storage } from "../../firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useSession } from "next-auth/react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import useUpload from "components/utilities/Cloud";
 const HeaderForm = () => {
   const { data: session } = useSession();
@@ -15,29 +15,32 @@ const HeaderForm = () => {
   useEffect(() => {
     setImageState(state);
   }, [state]);
-  const addImage = async (e) => {
+  const addImage = useCallback(async (e) => {
     if (e.target.files[0]) {
       await fetchData(e);
     }
-  };
+
+    //eslint-disable-next-line
+  }, []);
   // const { email, image, name } = session?.user;
-  const addPost = async () => {
+  const addPost = useCallback(async () => {
     if (isLoading) return;
     setIsLoading(true);
     await addDoc(collection(db, "posts"), {
       id: session.user.uid,
       text: textState,
       userImage: session.user.image,
-      image: imageState,
+      image: imageState ? imageState : null,
       timestamp: serverTimestamp(),
       name: session.user.name,
       username: session.user.username,
     });
     setTextState("");
-    setImageState(undefined);
+    setImageState(null);
     setIsLoading(false);
     // const imageRef = ref(storage,`posts/${docRef.id}/image`);
-  };
+    //eslint-disable-next-line
+  }, [textState, imageState]);
   return (
     session && (
       <>

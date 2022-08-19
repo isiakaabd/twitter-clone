@@ -1,5 +1,3 @@
-import React from "react";
-// import Image from "next/image";
 import logo from "components/images/logo.svg";
 import { DotsCircleHorizontalIcon } from "@heroicons/react/outline";
 import { useSession, signOut } from "next-auth/react";
@@ -8,7 +6,7 @@ const Profile = () => {
 
   return (
     <div className=" hoverEffect flex mt-auto items-center justify-center w-full">
-      <div className="text-gray-700 flex items-center justify-center xl:justify-start">
+      <div className="text-gray-700 flex items-center space-x-1 justify-center xl:justify-start">
         <img
           onClick={signOut}
           src={session?.user?.image}

@@ -2,8 +2,9 @@ import { SparklesIcon } from "@heroicons/react/outline";
 import { HeaderForm, Tweets } from "components/layout";
 import { db } from "../../firebase";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { useState, useEffect } from "react";
-export default function Feed() {
+import { useState, memo, useEffect, useMemo } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+const Feed = () => {
   const [tweets, setTweets] = useState([]);
 
   useEffect(
@@ -28,9 +29,21 @@ export default function Feed() {
         </div>
       </div>
       <HeaderForm />
-      {tweets?.map((tweet) => (
-        <Tweets key={tweet.id} tweet={tweet} />
-      ))}
+      <AnimatePresence>
+        {tweets?.map((tweet) => (
+          <motion.div
+            key={tweet.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <Tweets key={tweet.id} tweet={tweet} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
-}
+};
+
+export default Feed;
