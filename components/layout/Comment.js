@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { DotsCircleHorizontalIcon } from "@heroicons/react/outline";
 import {
   ChatIcon,
@@ -17,7 +18,6 @@ import {
   collection,
   deleteDoc,
 } from "firebase/firestore";
-import PropTypes from "prop-types";
 import Moment from "react-moment";
 import { signIn, useSession } from "next-auth/react";
 import { db } from "../../firebase";
@@ -25,7 +25,8 @@ import { useState, useEffect, useCallback, memo } from "react";
 import { useRecoilState } from "recoil";
 import { modalState } from "../../atom";
 import { useRouter } from "next/router";
-const Tweets = ({ tweet, id }) => {
+
+const Comment = ({ comment, id, newPostId }) => {
   const router = useRouter();
   const { data: session } = useSession();
   const [likes, setLikes] = useState([]);
@@ -36,8 +37,8 @@ const Tweets = ({ tweet, id }) => {
   const handleOpen = useCallback(() => {
     if (session?.user) {
       setOpen(!open);
-      setPostId(id);
-    } else signIn();
+      setPostId(newPostId);
+    } else router.push("/auth/signin");
     //  eslint-disable-next-line
   }, []);
 
@@ -46,41 +47,68 @@ const Tweets = ({ tweet, id }) => {
   const likePost = async () => {
     if (session) {
       if (hasLike) {
-        await deleteDoc(doc(db, "posts", id, "likes", session?.user.uid));
+        await deleteDoc(
+          doc(
+            db,
+            "posts",
+            newPostId,
+            "comments",
+            id,
+            "likes",
+            session?.user.uid
+          )
+        );
       } else {
-        await setDoc(doc(db, "posts", id, "likes", session.user.uid), {
-          username: session.user.username,
-        });
+        await setDoc(
+          doc(
+            db,
+            "posts",
+            newPostId,
+            "comments",
+            id,
+            "likes",
+            session.user.uid
+          ),
+          {
+            username: session?.user.username,
+          }
+        );
       }
     } else {
       signIn();
     }
   };
-  useEffect(() => {
-    onSnapshot(collection(db, "posts", id, "likes"), (snapshot) =>
-      setLikes(snapshot.docs)
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(
+    () =>
+      onSnapshot(
+        collection(db, "posts", newPostId, "comments", id, "likes"),
+        (snapshot) => setLikes(snapshot.docs)
+      ),
+    [newPostId, id]
+  );
   const deleteTweet = async () => {
-    if (window.confirm("Are you sure you want to delete this tweet?")) {
-      await deleteDoc(doc(db, "posts", id));
+    if (window.confirm("Are you sure you want to delete this comment?")) {
+      await deleteDoc(doc(db, "posts", newPostId, "comments", id));
     }
-    router.push("/");
   };
-  const [comments, setComments] = useState([]);
-  useEffect(() => {
-    onSnapshot(collection(db, "posts", id, "comments"), (snapshot) =>
-      setComments(snapshot.docs)
-    );
-  }, [id]);
 
   useEffect(() => {
-    setHasLike(likes.findIndex((like) => like.id === session?.user.uid) !== -1);
+    setHasLike(
+      likes?.findIndex((like) => like.id === session?.user?.uid) !== -1
+    );
   }, [likes, session?.user.uid]);
-  const { id: ids, timestamp, image, username, userImage, name, text } = tweet;
+
+  const {
+    userId,
+    timestamp,
+    image,
+    username,
+    userImage,
+    name,
+    comment: commenT,
+  } = comment;
   return (
-    <div className="flex space-x-2 p-3 cursor-pointer border-b border-gray-200">
+    <div className="pl-20 flex space-x-2 p-3 cursor-pointer border-b border-gray-200">
       <img alt={name} className="h-11 w-11 rounded-full" src={userImage} />
 
       <div className=" flex-1 w-full flex flex-col">
@@ -100,15 +128,11 @@ const Tweets = ({ tweet, id }) => {
             <DotsHorizontalIcon className="h-10  w-10 hoverEffect hover:bg-sky-100 p-2 hover:text-sky-500" />
           </div>
         </div>
-        <h3
-          onClick={() => router.push(`/posts/${id}`)}
-          className="mb-2 text-gray-800 text-[15px] sm:text-[16px]"
-        >
-          {text}
+        <h3 className="mb-2 text-gray-800 text-[15px] sm:text-[16px]">
+          {commenT}
         </h3>
         {image && (
           <img
-            onClick={() => router.push(`/posts/${id}`)}
             className="w-full mr-2 rounded-2xl object-cover p-2"
             src={image}
             alt="user"
@@ -121,17 +145,10 @@ const Tweets = ({ tweet, id }) => {
               onClick={handleOpen}
               className="h-10 w-10 p-2  hoverEffect hover:text-sky-blue-500 hover:bg-sky-100"
             />
-            <span
-              className={`text-sm select-none ${
-                comments?.length <= 0 && "invisible"
-              }`}
-            >
-              {comments.length}
-            </span>
           </div>
           <ShareIcon className="h-10 w-10  p-2 hoverEffect hover:text-sky-500 hover:bg-sky-100" />
 
-          {session?.user.uid === ids && (
+          {session?.user.uid === userId && (
             <TrashIcon
               onClick={deleteTweet}
               className="h-10 w-10  p-2 hoverEffect hover:text-red-600 hover:bg-red-100"
@@ -163,9 +180,10 @@ const Tweets = ({ tweet, id }) => {
     </div>
   );
 };
+export default memo(Comment);
 
-Tweets.propTypes = {
-  tweet: PropTypes.object.isRequired,
+Comment.propTypes = {
+  comment: PropTypes.object.isRequired,
+  newPostId: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
 };
-export default memo(Tweets);

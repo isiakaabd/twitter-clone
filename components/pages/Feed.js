@@ -20,7 +20,7 @@ const Feed = () => {
 
   return (
     <div className="sm:ml-[75px] xl:ml-[300px] w-[800px]  xl:min-w-6xl border-r border-l flex-2">
-      <div className="flex sticky item-center p-3 top-0 z-30 bg-white border-b border-gray-200 ">
+      <div className="flex sticky items-center p-3 top-0 z-30 bg-white border-b border-gray-200 ">
         <p className="text-lg flex-1 sm:text-xl font-bold cursor-pointer">
           Home
         </p>
@@ -38,7 +38,7 @@ const Feed = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 1 }}
           >
-            <Tweets key={tweet.id} tweet={tweet} />
+            <Tweets key={tweet.id} id={tweet?.id} tweet={tweet?.data()} />
           </motion.div>
         ))}
       </AnimatePresence>

@@ -28,7 +28,6 @@ const AddUsers = ({ data }) => {
                   width="40"
                   height="40"
                   alt={name?.first}
-                  loading="lazy"
                 />
                 <div className="ml-4 flex-1 leading-5">
                   <h4 className="font-bold hover:underline text-[14px] truncate">

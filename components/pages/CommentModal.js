@@ -33,12 +33,6 @@ const CommentModal = () => {
     );
   }, [postId]);
 
-  // const [hasComment,setHasCOmment]= useState(false);
-  //     useEffect(() => {
-  //       setHasLike(
-  //         likes.findIndex((like) => like.id === session?.user.uid) !== -1
-  //       );
-  //     }, [likes, session?.user.uid]);
   const addImage = useCallback(async (e) => {
     if (e.target.files[0]) {
       await fetchData(e);
@@ -55,20 +49,11 @@ const CommentModal = () => {
       userImage: session.user.image,
       timestamp: serverTimestamp(),
       image: imageState ? imageState : null,
+      userId: session.user.uid,
     });
     handleClose();
-    router.push(`posts/${postId}`);
+    router.push(`/posts/${postId}`);
   };
-  // const customStyles = {
-  //   content: {
-  //     top: "50%",
-  //     left: "50%",
-  //     right: "auto",
-  //     bottom: "auto",
-  //     marginRight: "-50%",
-  //     transform: "translate(-50%, -50%)",
-  //   },
-  // };
 
   return (
     <Modal
@@ -128,7 +113,6 @@ const CommentModal = () => {
           <div className="ml-1 w-full space-x-3  flex">
             <img
               src={session?.user?.image}
-              loading="lazy"
               alt={`${session?.user?.name}'s profile picture`}
               className="h-11 w-11 rounded-full cursor-pointer hover:brightness-95"
             />

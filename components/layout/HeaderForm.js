@@ -48,7 +48,6 @@ const HeaderForm = () => {
           <div className="w-full space-x-3  flex ">
             <img
               src={session?.user?.image}
-              loading="lazy"
               alt={`${session.user.name}'s profile picture`}
               className="h-11 w-11 rounded-full cursor-pointer hover:brightness-95"
             />

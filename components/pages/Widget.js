@@ -28,7 +28,6 @@ const Widget = ({ data, news }) => {
 
         <img
           alt={author}
-          loading="lazy"
           className="h-[70px] rounded-xl object-contain w-[70px]"
           src={image}
         />
