@@ -6,7 +6,10 @@ import {
   ShareIcon,
   HeartIcon,
 } from "@heroicons/react/outline";
-import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
+import {
+  DotsHorizontalIcon,
+  HeartIcon as HeartIconFilled,
+} from "@heroicons/react/solid";
 import {
   setDoc,
   doc,
@@ -16,10 +19,10 @@ import {
 } from "firebase/firestore";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { db } from "../../firebase";
 import { useState, useEffect, useCallback, memo } from "react";
-import { useRecoilState, useRecoilCallback } from "recoil";
+import { useRecoilState } from "recoil";
 import { modalState } from "../../atom";
 const Tweets = ({ tweet }) => {
   // const { modal, postId: postValue } = modalState;
@@ -64,6 +67,12 @@ const Tweets = ({ tweet }) => {
       await deleteDoc(doc(db, "posts", tweet.id));
     }
   };
+  const [comments, setComments] = useState([]);
+  useEffect(() => {
+    onSnapshot(collection(db, "posts", tweet.id, "comments"), (snapshot) =>
+      setComments(snapshot.docs)
+    );
+  }, [tweet.id]);
 
   useEffect(() => {
     setHasLike(likes.findIndex((like) => like.id === session?.user.uid) !== -1);
@@ -86,7 +95,7 @@ const Tweets = ({ tweet }) => {
           </div>
           {/* </div> */}
           <div>
-            <DotsCircleHorizontalIcon className="h-10  w-10 hoverEffect hover:bg-sky-100 p-2 hover:text-sky-500" />
+            <DotsHorizontalIcon className="h-10  w-10 hoverEffect hover:bg-sky-100 p-2 hover:text-sky-500" />
           </div>
         </div>
         <h3 className="mb-2 text-gray-800 text-[15px] sm:text-[16px]">
@@ -101,10 +110,19 @@ const Tweets = ({ tweet }) => {
         )}
 
         <div className="flex items-center justify-between p-2 w-100">
-          <ChatIcon
-            onClick={handleOpen}
-            className="h-10 w-10 p-2  hoverEffect hover:text-sky-blue-500 hover:bg-sky-100"
-          />
+          <div className="flex items-center">
+            <ChatIcon
+              onClick={handleOpen}
+              className="h-10 w-10 p-2  hoverEffect hover:text-sky-blue-500 hover:bg-sky-100"
+            />
+            <span
+              className={`text-sm select-none ${
+                comments?.length <= 0 && "invisible"
+              }`}
+            >
+              {comments.length}
+            </span>
+          </div>
           <ShareIcon className="h-10 w-10  p-2 hoverEffect hover:text-sky-500 hover:bg-sky-100" />
 
           {session?.user.uid === id && (
