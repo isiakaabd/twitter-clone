@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
-// import AppleProvider from "next-auth/providers/apple";
+// import AppleProvider from "next-auth/providers/apple"
 import GoogleProvider from "next-auth/providers/google";
-// import EmailProvider from "next-auth/providers/email";
+// import EmailProvider from "next-auth/providers/email"
 
 export default NextAuth({
   secret: process.env.NEXT_PUBLIC_SECRET,

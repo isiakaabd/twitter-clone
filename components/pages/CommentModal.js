@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, memo, useEffect, useCallback } from "react";
 import { useRecoilState } from "recoil";
 import { modalState } from "../../atom";
 import Modal from "react-modal";
@@ -54,7 +54,6 @@ const CommentModal = () => {
     handleClose();
     router.push(`/posts/${postId}`);
   };
-
   return (
     <Modal
       isOpen={state}
@@ -166,4 +165,4 @@ const CommentModal = () => {
   );
 };
 
-export default CommentModal;
+export default memo(CommentModal);

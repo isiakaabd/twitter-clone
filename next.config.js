@@ -8,6 +8,7 @@ const nextConfig = withPWA({
 
     return config;
   },
+
   reactStrictMode: false,
   pwa: {
     dest: "public",

@@ -22,7 +22,7 @@ const HeaderForm = () => {
 
     //eslint-disable-next-line
   }, []);
-  // const { email, image, name } = session?.user;
+  // const { email, image, name } = session?.user
   const addPost = useCallback(async () => {
     if (isLoading) return;
     setIsLoading(true);
@@ -38,7 +38,7 @@ const HeaderForm = () => {
     setTextState("");
     setImageState(null);
     setIsLoading(false);
-    // const imageRef = ref(storage,`posts/${docRef.id}/image`);
+    // const imageRef = ref(storage,`posts/${docRef.id}/image`)
     //eslint-disable-next-line
   }, [textState, imageState]);
   return (

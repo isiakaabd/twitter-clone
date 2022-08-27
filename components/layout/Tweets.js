@@ -41,7 +41,7 @@ const Tweets = ({ tweet, id }) => {
     //  eslint-disable-next-line
   }, []);
 
-  // );
+  // )
 
   const likePost = async () => {
     if (session) {

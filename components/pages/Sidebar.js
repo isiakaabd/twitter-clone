@@ -1,14 +1,16 @@
-import React from "react";
+import { memo } from "react";
 import { sideMenu } from "components/helpers/sideMenu";
 import Image from "next/image";
 import { Profile } from "components/layout";
 import logo from "components/images/logo.svg";
 import { useSession, signIn } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
+
 const Sidebar = () => {
   const { data: session } = useSession();
   return (
-    <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full">
+    // <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full">
+    <div className="hidden sm:flex flex-col p-4 xl:items-start h-full fixed">
       <div className="hoverEffect p-0 flex items-center justify-center hover:bg-blue-100 xl:p-1">
         <Image width="50" height="50" src={logo} alt="twitter-logo" />
       </div>
@@ -29,9 +31,7 @@ const Sidebar = () => {
                   className="hoverEffect flex items-center justify-center xl:justify-start text-lg space-x-3 text-gray-700"
                 >
                   <Icon className="h-7" />
-                  <span
-                    className={`${id === 1 && "font-bold"} hidden xl:inline`}
-                  >
+                  <span className={`${id === 1 && "font-bold"} md:hidden`}>
                     {name}
                   </span>
                 </div>
@@ -42,7 +42,7 @@ const Sidebar = () => {
       </div>
       {session ? (
         <>
-          <button className="bg-blue-400 text-white rounded-full w-56 h-12 shadow-md font-bold hover:brightness-95 text-lg hidden xl:inline">
+          <button className="bg-blue-400 text-white rounded-full w-56 h-12 shadow-md font-bold hover:brightness-95 text-lg md:hidden">
             Tweet
           </button>
           <Profile />
@@ -59,4 +59,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default memo(Sidebar);

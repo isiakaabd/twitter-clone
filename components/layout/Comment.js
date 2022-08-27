@@ -42,7 +42,7 @@ const Comment = ({ comment, id, newPostId }) => {
     //  eslint-disable-next-line
   }, []);
 
-  // );
+  // )
 
   const likePost = async () => {
     if (session) {

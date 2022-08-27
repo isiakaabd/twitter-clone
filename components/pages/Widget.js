@@ -36,8 +36,8 @@ const Widget = ({ data, news }) => {
   };
 
   return (
-    <div className="xl:w-[600px] ml-6 space-y-5 hidden lg:inline">
-      <div className=" w-[90%] xl:w-[75%] sticky top-0 bg-white py-1.5 z-50 border-gray-100">
+    <div className="flex-1 xl:max-w-[700px] py-2 ml-6 space-y-5 hidden lg:inline">
+      <div className="sticky top-0 bg-white py-1.5 z-50 border-gray-100">
         <div className=" relative rounded-full flex items-center p-3 border-gray-500 ">
           <SearchIcon className="h-5  text-gray-500 z-50" />
           <input
@@ -47,7 +47,7 @@ const Widget = ({ data, news }) => {
           />
         </div>
       </div>
-      <div className=" p-2 bg-gray-100 rounded-lg w-[90%] xl:w-[75%] ">
+      <div className=" p-2 bg-gray-100 rounded-lg  ">
         <h1 className="text-xl  px-4 font-bold tracking-wide">
           What&apos;s happening
         </h1>

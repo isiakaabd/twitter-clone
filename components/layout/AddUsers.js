@@ -5,7 +5,7 @@ const AddUsers = ({ data }) => {
   const [number, setNumber] = useState(5);
 
   return (
-    <div className="sticky top-16  p-2 bg-gray-100 rounded-lg w-[90%] xl:w-[75%] ">
+    <div className="sticky top-16  p-2 bg-gray-100 rounded-lg ">
       <h4 className="text-xl  px-4 font-bold tracking-wide">Who to follow</h4>
       <AnimatePresence>
         {data.slice(0, number).map((item) => {
