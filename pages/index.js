@@ -19,7 +19,7 @@ const Home = ({ data, news }) => {
 
       <main className="flex  min-h-screen  max-w-7xl mx-auto p-2">
         <Sidebar />
-        <div className="md:ml-[80px] xl:ml-[150px] flex p-0 w-full">
+        <div className="md:ml-[100px] xl:ml-[200px] flex p-0 w-full">
           <Feed />
           <Widget data={data} news={news} />
           <CommentModal />
